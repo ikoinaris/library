@@ -3,6 +3,7 @@ package com.apachekafka.libraryeventsproducer.controller;
 import com.apachekafka.libraryeventsproducer.domain.LibraryEvent;
 import com.apachekafka.libraryeventsproducer.producer.LibraryEventProducer;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
+
 @RestController
+@Slf4j
 public class LibraryEventsController {
 
     @Autowired
@@ -18,10 +23,11 @@ public class LibraryEventsController {
 
     @PostMapping("/v1/libraryevent")
     public ResponseEntity<LibraryEvent> postLibraryEvent(@RequestBody LibraryEvent libraryEvent)
-            throws JsonProcessingException {
+            throws JsonProcessingException, ExecutionException, InterruptedException, TimeoutException {
 
         //invoke kafka producer
-        libraryEventProducer.sendLibraryEvent(libraryEvent);
+        //libraryEventProducer.sendLibraryEvent(libraryEvent);
+        libraryEventProducer.sendLibraryEventSynchronous(libraryEvent);
         return ResponseEntity.status(HttpStatus.CREATED).body(libraryEvent);
     }
 }
