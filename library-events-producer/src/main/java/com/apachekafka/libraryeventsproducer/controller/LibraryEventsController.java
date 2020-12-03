@@ -27,7 +27,8 @@ public class LibraryEventsController {
 
         //invoke kafka producer
         //libraryEventProducer.sendLibraryEvent(libraryEvent);
-        libraryEventProducer.sendLibraryEventSynchronous(libraryEvent);
+        //libraryEventProducer.sendLibraryEventSynchronous(libraryEvent);
+        libraryEventProducer.sendLibraryEventAsynchronous(libraryEvent);
         return ResponseEntity.status(HttpStatus.CREATED).body(libraryEvent);
     }
 }
