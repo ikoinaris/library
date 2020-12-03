@@ -1,6 +1,7 @@
 package com.apachekafka.libraryeventsproducer.controller;
 
 import com.apachekafka.libraryeventsproducer.domain.LibraryEvent;
+import com.apachekafka.libraryeventsproducer.domain.LibraryEventType;
 import com.apachekafka.libraryeventsproducer.producer.LibraryEventProducer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +26,7 @@ public class LibraryEventsController {
     public ResponseEntity<LibraryEvent> postLibraryEvent(@RequestBody LibraryEvent libraryEvent)
             throws JsonProcessingException, ExecutionException, InterruptedException, TimeoutException {
 
-        //invoke kafka producer
-        //libraryEventProducer.sendLibraryEvent(libraryEvent);
-        //libraryEventProducer.sendLibraryEventSynchronous(libraryEvent);
+        libraryEvent.setLibraryEventType(LibraryEventType.NEW);
         libraryEventProducer.sendLibraryEventAsynchronous(libraryEvent);
         return ResponseEntity.status(HttpStatus.CREATED).body(libraryEvent);
     }
