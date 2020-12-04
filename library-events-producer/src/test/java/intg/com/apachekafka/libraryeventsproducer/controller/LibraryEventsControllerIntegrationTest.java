@@ -35,7 +35,7 @@ public class LibraryEventsControllerIntegrationTest {
 
         // when
         ResponseEntity<LibraryEvent> responseEntity =
-                testRestTemplate.exchange("/vi/libraryevent", HttpMethod.POST, entity, LibraryEvent.class);
+                testRestTemplate.exchange("/v1/libraryevent", HttpMethod.POST, entity, LibraryEvent.class);
 
         // then
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
