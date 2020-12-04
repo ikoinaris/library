@@ -5,6 +5,7 @@ import com.apachekafka.libraryeventsproducer.domain.Book;
 import com.apachekafka.libraryeventsproducer.domain.LibraryEvent;
 import com.apachekafka.libraryeventsproducer.producer.LibraryEventProducer;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.kafka.common.protocol.types.Field;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(LibraryEventsController.class)
@@ -51,7 +53,28 @@ public class LibraryEventsControllerUnitTest {
         mockMvc.perform(post("/v1/libraryevent")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
+    }
 
-        // then
+    @Test
+    void postLibraryEvent_4xx() throws Exception {
+
+        // given
+        Book book = Book.builder()
+                .id(null)
+                .author(null)
+                .title("Kafka using SpringBoot").build();
+
+        LibraryEvent libraryEvent = LibraryEvent.builder()
+                .id(null)
+                .book(book).build();
+
+        String json = mapper.writeValueAsString(libraryEvent);
+        doNothing().when(libraryEventProducer).sendLibraryEventAsynchronous(isA(LibraryEvent.class));
+
+        // when
+        String expectedErrorMessage = "";
+        mockMvc.perform(post("/v1/libraryevent")
+                .content(json)
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError()).andExpect(content().string(expectedErrorMessage));
     }
 }
