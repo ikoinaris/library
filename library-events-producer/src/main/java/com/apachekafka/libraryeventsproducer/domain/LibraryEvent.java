@@ -1,6 +1,5 @@
 package com.apachekafka.libraryeventsproducer.domain;
 
-import com.sun.istack.internal.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +15,5 @@ public class LibraryEvent {
 
     private LibraryEventType libraryEventType;
 
-    @NotNull
     private Book book;
 }

@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,7 +48,7 @@ public class LibraryEventsControllerUnitTest {
                 .book(book).build();
 
         String json = mapper.writeValueAsString(libraryEvent);
-        doNothing().when(libraryEventProducer).sendLibraryEventAsynchronous(isA(LibraryEvent.class));
+        when(libraryEventProducer.sendLibraryEventAsynchronous(isA(LibraryEvent.class))).thenReturn(null);
 
         // when
         mockMvc.perform(post("/v1/libraryevent")
@@ -69,7 +70,7 @@ public class LibraryEventsControllerUnitTest {
                 .book(book).build();
 
         String json = mapper.writeValueAsString(libraryEvent);
-        doNothing().when(libraryEventProducer).sendLibraryEventAsynchronous(isA(LibraryEvent.class));
+        when(libraryEventProducer.sendLibraryEventAsynchronous(isA(LibraryEvent.class))).thenReturn(null);
 
         // when
         String expectedErrorMessage = "";
