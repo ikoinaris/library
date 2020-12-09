@@ -36,7 +36,7 @@ public class LibraryEventsController {
     public ResponseEntity<?> putLibraryEvent(@RequestBody LibraryEvent libraryEvent)
             throws JsonProcessingException, ExecutionException, InterruptedException, TimeoutException {
 
-        if(libraryEvent.getId() == null){
+        if(libraryEvent.getLibraryEventId() == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please pass the libraryId");
         }
         libraryEvent.setLibraryEventType(LibraryEventType.UPDATE);
