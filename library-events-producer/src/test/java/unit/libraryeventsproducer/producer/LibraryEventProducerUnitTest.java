@@ -43,12 +43,12 @@ public class LibraryEventProducerUnitTest {
 
         // GIVEN
         Book book = Book.builder()
-                .id(123)
+                .bookId(123)
                 .author("Ioannis Koinaris")
                 .title("Kafka using SpringBoot").build();
 
         LibraryEvent libraryEvent = LibraryEvent.builder()
-                .id(null)
+                .libraryEventId(null)
                 .book(book).build();
         SettableListenableFuture future = new SettableListenableFuture();
         future.setException(new RuntimeException("Exception calling Kafka"));
@@ -63,16 +63,16 @@ public class LibraryEventProducerUnitTest {
 
         // GIVEN
         Book book = Book.builder()
-                .id(123)
+                .bookId(123)
                 .author("Ioannis Koinaris")
                 .title("Kafka using SpringBoot").build();
 
         LibraryEvent libraryEvent = LibraryEvent.builder()
-                .id(null)
+                .libraryEventId(null)
                 .book(book).build();
         String record = mapper.writeValueAsString(libraryEvent);
         SettableListenableFuture future = new SettableListenableFuture();
-        ProducerRecord<Integer, String> producerRecord = new ProducerRecord("library-events", libraryEvent.getId(), record);
+        ProducerRecord<Integer, String> producerRecord = new ProducerRecord("library-events", libraryEvent.getLibraryEventId(), record);
 
         RecordMetadata metadata = new RecordMetadata(
                 new TopicPartition("library-events", 1),
