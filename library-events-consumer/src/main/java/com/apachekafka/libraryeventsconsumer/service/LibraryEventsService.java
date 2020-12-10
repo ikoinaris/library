@@ -9,6 +9,8 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @Slf4j
 public class LibraryEventsService {
@@ -28,11 +30,23 @@ public class LibraryEventsService {
                 save(libraryEvent);
                 break;
             case UPDATE:
-                // update
+                validate(libraryEvent);
+                save(libraryEvent);
                 break;
             default:
                 log.info("Invalid Library Event Type");
         }
+    }
+
+    private void validate(LibraryEvent libraryEvent) {
+        if (libraryEvent.getLibraryEventId() == null) {
+            throw new IllegalArgumentException("Library EventId is missing!");
+        }
+        Optional<LibraryEvent> id = libraryEventsRepository.findById(libraryEvent.getLibraryEventId());
+        if (!id.isPresent()){
+            throw new IllegalArgumentException("Not a valid Library Event!");
+        }
+        log.info("Validated successfully!");
     }
 
     private void save(LibraryEvent libraryEvent) {
