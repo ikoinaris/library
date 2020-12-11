@@ -56,12 +56,12 @@ public class LibraryEventsControllerIntegrationTest {
 
         // GIVEN
         Book book = Book.builder()
-                .id(123)
+                .bookId(123)
                 .author("Ioannis Koinaris")
                 .title("Kafka using SpringBoot").build();
 
         LibraryEvent libraryEvent = LibraryEvent.builder()
-                .id(null)
+                .libraryEventId(null)
                 .book(book).build();
 
         HttpHeaders headers = new HttpHeaders();
@@ -86,13 +86,13 @@ public class LibraryEventsControllerIntegrationTest {
 
         // GIVEN
         Book book = Book.builder()
-                .id(456)
+                .bookId(456)
                 .author("Ioannis Koinaris")
                 .title("Kafka using Spring Boot")
                 .build();
 
         LibraryEvent libraryEvent = LibraryEvent.builder()
-                .id(123)
+                .libraryEventId(123)
                 .book(book)
                 .build();
         HttpHeaders headers = new HttpHeaders();

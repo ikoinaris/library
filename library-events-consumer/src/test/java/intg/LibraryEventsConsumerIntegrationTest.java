@@ -15,13 +15,13 @@ import org.springframework.test.context.TestPropertySource;
         "spring.kafka.consumer.bootstrap-servers=${spring.embedded.kafka.brokers}"})
 public class LibraryEventsConsumerIntegrationTest {
 
-    @Autowired
+    //@Autowired
     EmbeddedKafkaBroker embeddedKafkaBroker;
 
-    @Autowired
+    //@Autowired
     KafkaTemplate<Integer, String> kafkaTemplate;
 
-    @Autowired
+    //@Autowired
     KafkaListenerEndpointRegistry kafkaListenerEndpointRegistry;
 
     @BeforeEach
