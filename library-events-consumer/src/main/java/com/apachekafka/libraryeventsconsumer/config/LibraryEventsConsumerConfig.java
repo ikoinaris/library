@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.kafka.ConcurrentKafkaListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.dao.RecoverableDataAccessException;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
@@ -14,6 +15,9 @@ import org.springframework.retry.RetryPolicy;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 @EnableKafka
@@ -47,8 +51,12 @@ public class LibraryEventsConsumerConfig {
 
     private RetryPolicy retryPolicy() {
 
-        SimpleRetryPolicy simpleRetryPolicy = new SimpleRetryPolicy();
-        simpleRetryPolicy.setMaxAttempts(3);
+        // SimpleRetryPolicy simpleRetryPolicy = new SimpleRetryPolicy();
+        //simpleRetryPolicy.setMaxAttempts(3);
+        Map<Class<? extends Throwable>, Boolean> exceptionMap = new HashMap<>();
+        exceptionMap.put(IllegalArgumentException.class, false);
+        exceptionMap.put(RecoverableDataAccessException.class, true);
+        SimpleRetryPolicy simpleRetryPolicy = new SimpleRetryPolicy(3, exceptionMap, true);
         return simpleRetryPolicy;
     }
 }
